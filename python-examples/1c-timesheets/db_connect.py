@@ -10,11 +10,12 @@ import binascii
 from targcontrol_query import *
 from export_logs import *
 from formit_1c_events import events_formited
+from execute_samples import timesheet_load_sample, calendarevents_load_sample
 
 
 """Подключение к базе данных 1С"""
 try:
-    conn = pyodbc.connect('DRIVER={ODBC Driver 17 for SQL Server};SERVER=ip;DATABASE=database;UID=user;PWD=password')
+    conn = pyodbc.connect('DRIVER={ODBC Driver 17 for SQL Server};SERVER=server;DATABASE=db;UID=sa;PWD=password')
     cursor = conn.cursor()
 except:
     print('Error: unable to connect to database')
@@ -101,18 +102,9 @@ def loaded_time(tables1c, tables_targcontrol, id_table):
 
                 # если 31 день в месяце
                 if len(hours) == 31:
+                    timesheet_load_sample(cursor, conn, id_table, id1c, hours)
                     cursor.execute(f"UPDATE _Document427_VT16125  "
-                        f"SET _Fld16128 = {hours[0]}, _Fld16129 = {hours[1]}, "
-                        f"_Fld16130 = {hours[2]}, _Fld16131 = {hours[3]}, _Fld16132 = {hours[4]},"
-                        f" _Fld16133 = {hours[5]},"
-                        f" _Fld16134 = {hours[6]}, _Fld16135 = {hours[7]}, _Fld16136 = {hours[8]}, "
-                        f"_Fld16137 = {hours[9]}, _Fld16138 = {hours[10]}, _Fld16139 = {hours[11]}, "
-                        f"_Fld16140 = {hours[12]}, _Fld16141 = {hours[13]}, _Fld16142 = {hours[14]},"
-                        f" _Fld16143 = {hours[15]}, _Fld16144 = {hours[16]}, _Fld16145 = {hours[17]}, _Fld16146 = {hours[18]},"
-                        f" _Fld16147 = {hours[19]}, "
-                        f"_Fld16148 = {hours[20]}, _Fld16149 = {hours[21]}, _Fld16150 = {hours[22]}, _Fld16151 = {hours[23]}, "
-                        f"_Fld16152 = {hours[24]}, _Fld16153 = {hours[25]}, _Fld16154 = {hours[26]}, _Fld16155 = {hours[27]},"
-                        f" _Fld16156 = {hours[28]}, _Fld16157 = {hours[29]}, "
+                        f"SET _Fld16156 = {hours[28]}, _Fld16157 = {hours[29]}, "
                         f"_Fld16158 = {hours[30]}"
                         f" where _Document427_IDRRef = {id_table} and _Fld16127RRef = {id1c}")
                     conn.commit()
@@ -121,18 +113,9 @@ def loaded_time(tables1c, tables_targcontrol, id_table):
                     # если 30 дней в месяце
                 if len(hours) == 30:
                     try:
+                        timesheet_load_sample(cursor, conn, id_table, id1c, hours)
                         cursor.execute(f"UPDATE _Document427_VT16125  "
-                        f"SET _Fld16128 = {hours[0]}, _Fld16129 = {hours[1]}, "
-                        f"_Fld16130 = {hours[2]}, _Fld16131 = {hours[3]}, _Fld16132 = {hours[4]},"
-                        f" _Fld16133 = {hours[5]},"
-                        f" _Fld16134 = {hours[6]}, _Fld16135 = {hours[7]}, _Fld16136 = {hours[8]}, "
-                        f"_Fld16137 = {hours[9]}, _Fld16138 = {hours[10]}, _Fld16139 = {hours[11]}, "
-                        f"_Fld16140 = {hours[12]}, _Fld16141 = {hours[13]}, _Fld16142 = {hours[14]},"
-                        f" _Fld16143 = {hours[15]}, _Fld16144 = {hours[16]}, _Fld16145 = {hours[17]}, _Fld16146 = {hours[18]},"
-                        f" _Fld16147 = {hours[19]}, "
-                        f"_Fld16148 = {hours[20]}, _Fld16149 = {hours[21]}, _Fld16150 = {hours[22]}, _Fld16151 = {hours[23]}, "
-                        f"_Fld16152 = {hours[24]}, _Fld16153 = {hours[25]}, _Fld16154 = {hours[26]}, _Fld16155 = {hours[27]},"
-                        f" _Fld16156 = {hours[28]}, _Fld16157 = {hours[29]}, _Fld16158 = 0"
+                        f"SET _Fld16156 = {hours[28]}, _Fld16157 = {hours[29]}, _Fld16158 = 0"
                         f" where _Document427_IDRRef = {id_table} and _Fld16127RRef = {id1c}")
                         conn.commit()
                         print(employee.get('Employee name'))
@@ -142,36 +125,15 @@ def loaded_time(tables1c, tables_targcontrol, id_table):
 
                 # если 28 дней в месяце
                 if len(hours) == 28:
-                    cursor.execute(f"UPDATE _Document427_VT16125  "
-                        f"SET _Fld16128 = {hours[0]}, _Fld16129 = {hours[1]}, "
-                        f"_Fld16130 = {hours[2]}, _Fld16131 = {hours[3]}, _Fld16132 = {hours[4]},"
-                        f" _Fld16133 = {hours[5]},"
-                        f" _Fld16134 = {hours[6]}, _Fld16135 = {hours[7]}, _Fld16136 = {hours[8]}, "
-                        f"_Fld16137 = {hours[9]}, _Fld16138 = {hours[10]}, _Fld16139 = {hours[11]}, "
-                        f"_Fld16140 = {hours[12]}, _Fld16141 = {hours[13]}, _Fld16142 = {hours[14]},"
-                        f" _Fld16143 = {hours[15]}, _Fld16144 = {hours[16]}, _Fld16145 = {hours[17]}, _Fld16146 = {hours[18]},"
-                        f" _Fld16147 = {hours[19]}, "
-                        f"_Fld16148 = {hours[20]}, _Fld16149 = {hours[21]}, _Fld16150 = {hours[22]}, _Fld16151 = {hours[23]}, "
-                        f"_Fld16152 = {hours[24]}, _Fld16153 = {hours[25]}, _Fld16154 = {hours[26]}, _Fld16155 = {hours[27]},"
-                        f" _Fld16156 = 0, _Fld16157 = 0, _Fld16158 = 0"
-                        f" where _Document427_IDRRef = {id_table} and _Fld16127RRef = {id1c}")
-                    conn.commit()
+                    timesheet_load_sample(cursor, conn, id_table, id1c, hours)
                     print(employee.get('Employee name'))
+                    conn.commit()
 
                 # если 29 дней в месяце
                 if len(hours) == 29:
+                    timesheet_load_sample(cursor, conn, id_table, id1c, hours)
                     cursor.execute(f"UPDATE _Document427_VT16125  "
-                        f"SET _Fld16128 = {hours[0]}, _Fld16129 = {hours[1]}, "
-                        f"_Fld16130 = {hours[2]}, _Fld16131 = {hours[3]}, _Fld16132 = {hours[4]},"
-                        f" _Fld16133 = {hours[5]},"
-                        f" _Fld16134 = {hours[6]}, _Fld16135 = {hours[7]}, _Fld16136 = {hours[8]}, "
-                        f"_Fld16137 = {hours[9]}, _Fld16138 = {hours[10]}, _Fld16139 = {hours[11]}, "
-                        f"_Fld16140 = {hours[12]}, _Fld16141 = {hours[13]}, _Fld16142 = {hours[14]},"
-                        f" _Fld16143 = {hours[15]}, _Fld16144 = {hours[16]}, _Fld16145 = {hours[17]}, _Fld16146 = {hours[18]},"
-                        f" _Fld16147 = {hours[19]}, "
-                        f"_Fld16148 = {hours[20]}, _Fld16149 = {hours[21]}, _Fld16150 = {hours[22]}, _Fld16151 = {hours[23]}, "
-                        f"_Fld16152 = {hours[24]}, _Fld16153 = {hours[25]}, _Fld16154 = {hours[26]}, _Fld16155 = {hours[27]},"
-                        f" _Fld16156 = {hours[28]}, _Fld16157 = 0, _Fld16158 = 0"
+                        f"SET _Fld16156 = {hours[28]}, _Fld16157 = 0, _Fld16158 = 0"
                         f" where _Document427_IDRRef = {id_table} and _Fld16127RRef = {id1c}")
                     conn.commit()
                     print(employee.get('Employee name'))
@@ -199,18 +161,9 @@ def loaded_calendar_events(tables1c, tables_targcontrol, id_table, events1c):
                 export_logs(f'Табель сформирован для сотрудника {employee1c.get("Employee")[1]} за ', f'{settings.month}-{settings.year}')
                 # если 31 день в месяце
                 if len(events) == 31:
+                    calendarevents_load_sample(cursor, conn, id_table, id1c, events)
                     cursor.execute(f"UPDATE _Document427_VT16125  "
-                        f"SET _Fld16159RRef = {events[0]}, _Fld16160RRef = {events[1]}, "
-                        f"_Fld16161RRef = {events[2]}, _Fld16162RRef = {events[3]}, _Fld16163RRef = {events[4]},"
-                        f" _Fld16164RRef = {events[5]},"
-                        f" _Fld16165RRef = {events[6]}, _Fld16166RRef = {events[7]}, _Fld16167RRef = {events[8]}, "
-                        f"_Fld16168RRef = {events[9]}, _Fld16169RRef = {events[10]}, _Fld16170RRef = {events[11]}, "
-                        f"_Fld16171RRef = {events[12]}, _Fld16172RRef = {events[13]}, _Fld16173RRef = {events[14]},"
-                        f" _Fld16174RRef = {events[15]}, _Fld16175RRef = {events[16]}, _Fld16176RRef = {events[17]}, _Fld16177RRef = {events[18]},"
-                        f" _Fld16178RRef = {events[19]}, "
-                        f"_Fld16179RRef = {events[20]}, _Fld16180RRef = {events[21]}, _Fld16181RRef = {events[22]}, _Fld16182RRef = {events[23]}, "
-                        f"_Fld16183RRef = {events[24]}, _Fld16184RRef = {events[25]}, _Fld16185RRef = {events[26]}, _Fld16186RRef = {events[27]},"
-                        f" _Fld16187RRef = {events[28]}, _Fld16188RRef = {events[29]}, "
+                        f"SET _Fld16187RRef = {events[28]}, _Fld16188RRef = {events[29]}, "
                         f"_Fld16189RRef = {events[30]}"
                         f" where _Document427_IDRRef = {id_table} and _Fld16127RRef = {id1c}")
                     print(employee.get('Employee name'))
@@ -219,18 +172,9 @@ def loaded_calendar_events(tables1c, tables_targcontrol, id_table, events1c):
                 # если 30 дней в месяце
                 if len(events) == 30:
                     try:
+                        calendarevents_load_sample(cursor, conn, id_table, id1c, events)
                         cursor.execute(f"UPDATE _Document427_VT16125  "
-                                       f"SET _Fld16159RRef = {events[0]}, _Fld16160RRef = {events[1]}, "
-                                       f"_Fld16161RRef = {events[2]}, _Fld16162RRef = {events[3]}, _Fld16163RRef = {events[4]},"
-                                       f" _Fld16164RRef = {events[5]},"
-                                       f" _Fld16165RRef = {events[6]}, _Fld16166RRef = {events[7]}, _Fld16167RRef = {events[8]}, "
-                                       f"_Fld16168RRef = {events[9]}, _Fld16169RRef = {events[10]}, _Fld16170RRef = {events[11]}, "
-                                       f"_Fld16171RRef = {events[12]}, _Fld16172RRef = {events[13]}, _Fld16173RRef = {events[14]},"
-                                       f" _Fld16174RRef = {events[15]}, _Fld16175RRef = {events[16]}, _Fld16176RRef = {events[17]}, _Fld16177RRef = {events[18]},"
-                                       f" _Fld16178RRef = {events[19]}, "
-                                       f"_Fld16179RRef = {events[20]}, _Fld16180RRef = {events[21]}, _Fld16181RRef = {events[22]}, _Fld16182RRef = {events[23]}, "
-                                       f"_Fld16183RRef = {events[24]}, _Fld16184RRef = {events[25]}, _Fld16185RRef = {events[26]}, _Fld16186RRef = {events[27]},"
-                                       f" _Fld16187RRef = {events[28]}, _Fld16188RRef = {events[29]}, "
+                                       f"SET _Fld16187RRef = {events[28]}, _Fld16188RRef = {events[29]}, "
                                        f"_Fld16189RRef = 0"
                                        f" where _Document427_IDRRef = {id_table} and _Fld16127RRef = {id1c}")
                         print(employee.get('Employee name'))
@@ -241,38 +185,15 @@ def loaded_calendar_events(tables1c, tables_targcontrol, id_table, events1c):
 
                 # если 28 дней в месяце
                 if len(events) == 28:
-                    cursor.execute(f"UPDATE _Document427_VT16125  "
-                                   f"SET _Fld16159RRef = {events[0]}, _Fld16160RRef = {events[1]}, "
-                                   f"_Fld16161RRef = {events[2]}, _Fld16162RRef = {events[3]}, _Fld16163RRef = {events[4]},"
-                                   f" _Fld16164RRef = {events[5]},"
-                                   f" _Fld16165RRef = {events[6]}, _Fld16166RRef = {events[7]}, _Fld16167RRef = {events[8]}, "
-                                   f"_Fld16168RRef = {events[9]}, _Fld16169RRef = {events[10]}, _Fld16170RRef = {events[11]}, "
-                                   f"_Fld16171RRef = {events[12]}, _Fld16172RRef = {events[13]}, _Fld16173RRef = {events[14]},"
-                                   f" _Fld16174RRef = {events[15]}, _Fld16175RRef = {events[16]}, _Fld16176RRef = {events[17]}, _Fld16177RRef = {events[18]},"
-                                   f" _Fld16178RRef = {events[19]}, "
-                                   f"_Fld16179RRef = {events[20]}, _Fld16180RRef = {events[21]}, _Fld16181RRef = {events[22]}, _Fld16182RRef = {events[23]}, "
-                                   f"_Fld16183RRef = {events[24]}, _Fld16184RRef = {events[25]}, _Fld16185RRef = {events[26]}, _Fld16186RRef = {events[27]},"
-                                   f" _Fld16187RRef = 0, _Fld16188RRef = 0, "
-                                   f"_Fld16189RRef = 0"
-                                   f" where _Document427_IDRRef = {id_table} and _Fld16127RRef = {id1c}")
+                    calendarevents_load_sample(cursor, conn, id_table, id1c, events)
                     print(employee.get('Employee name'))
-
                     conn.commit()
 
                 # если 29 дней в месяце
                 if len(events) == 29:
+                    calendarevents_load_sample(cursor, conn, id_table, id1c, events)
                     cursor.execute(f"UPDATE _Document427_VT16125  "
-                                   f"SET _Fld16159RRef = {events[0]}, _Fld16160RRef = {events[1]}, "
-                                   f"_Fld16161RRef = {events[2]}, _Fld16162RRef = {events[3]}, _Fld16163RRef = {events[4]},"
-                                   f" _Fld16164RRef = {events[5]},"
-                                   f" _Fld16165RRef = {events[6]}, _Fld16166RRef = {events[7]}, _Fld16167RRef = {events[8]}, "
-                                   f"_Fld16168RRef = {events[9]}, _Fld16169RRef = {events[10]}, _Fld16170RRef = {events[11]}, "
-                                   f"_Fld16171RRef = {events[12]}, _Fld16172RRef = {events[13]}, _Fld16173RRef = {events[14]},"
-                                   f" _Fld16174RRef = {events[15]}, _Fld16175RRef = {events[16]}, _Fld16176RRef = {events[17]}, _Fld16177RRef = {events[18]},"
-                                   f" _Fld16178RRef = {events[19]}, "
-                                   f"_Fld16179RRef = {events[20]}, _Fld16180RRef = {events[21]}, _Fld16181RRef = {events[22]}, _Fld16182RRef = {events[23]}, "
-                                   f"_Fld16183RRef = {events[24]}, _Fld16184RRef = {events[25]}, _Fld16185RRef = {events[26]}, _Fld16186RRef = {events[27]},"
-                                   f" _Fld16187RRef = {events[28]}, _Fld16188RRef = 0, "
+                                   f"SET _Fld16187RRef = {events[28]}, _Fld16188RRef = 0, "
                                    f"_Fld16189RRef = 0"
                                    f" where _Document427_IDRRef = {id_table} and _Fld16127RRef = {id1c}")
                     print(employee.get('Employee name'))
